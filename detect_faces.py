@@ -47,10 +47,10 @@ def detectFaces(imageData):
 ap = argparse.ArgumentParser(description="Detect faces using deep learning in OpenCV.")
 group = ap.add_mutually_exclusive_group(required=True)
 group.add_argument("-i", "--image", help="path to input image")
-group.add_argument("-w", "--webcam", type=int, help="webcam stream number")
-ap.add_argument("-o", "--output", default="images", help="path to output directory")
+group.add_argument("-w", "--webcam", type=int, help="webcam stream number (try 0, 1, 2, ...)")
+ap.add_argument("-o", "--output", default="images", help="image output directory")
 ap.add_argument("-v", "--verbose", action='store_true', help="display debugging output")
-ap.add_argument("-c", "--confidence", type=float, default=0.2, help="minimum probability to filter weak detections")
+ap.add_argument("-c", "--confidence", type=float, default=0.2, help="threshold to display face detections")
 ap.add_argument("-p", "--prototxt", default="models/deploy.prototxt.txt", help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("-m", "--model", default="models/res10_300x300_ssd_iter_140000.caffemodel", help="path to Caffe pre-trained model")
 args = vars(ap.parse_args())
@@ -59,7 +59,7 @@ args = vars(ap.parse_args())
 log("Loading model...")
 net = cv2.dnn.readNetFromCaffe(args["prototxt"], args["model"])
 
-if args["image"]:
+if args["image"] is not None:
     # load the input image and construct an input blob for the image by resizing to a fixed 300x300 pixels and then normalizing it
     log("Loading input image ...")
     image = cv2.imread(args["image"])
@@ -74,7 +74,13 @@ if args["image"]:
     cv2.imshow("Output", image)
     cv2.waitKey(0)
 
-elif args["webcam"]:
+    # save image with detections
+    filepath, extension = os.path.splitext(args["image"])
+    pathDetected = filepath + "-faces" + extension
+    log("Saving image " + pathDetected + " ...")
+    cv2.imwrite(pathDetected, image)
+
+elif args["webcam"] is not None:
     # initialize the video stream and allow the cammera sensor to warmup
     log("Starting video stream ...")
     vs = VideoStream(src=args["webcam"]).start()
@@ -98,12 +104,14 @@ elif args["webcam"]:
         cv2.imshow("Webcam " + str(args["webcam"]) + " stream", frame)
         key = cv2.waitKey(1) & 0xFF
 
-        # if the `w` key was pressed, write the *original* frame to disk
+        # if the `w` key was pressed, write the original and adjusted frame to disk
         if key == ord("w"):
-            p = os.path.sep.join([args["output"], "{}.png".format(str(total).zfill(5))])
-            log("Saving image " + p + " ...")
-            cv2.imwrite(p, orig)
             total += 1
+            pathOriginal = os.path.sep.join([args["output"], "{}.jpg".format(str(total).zfill(3))])
+            pathDetected = os.path.sep.join([args["output"], "{}-faces.jpg".format(str(total).zfill(3))])
+            log("Saving images " + pathOriginal + ", " + pathDetected + " ...")
+            cv2.imwrite(pathOriginal, orig)
+            cv2.imwrite(pathDetected, frame)
 
         # if the `q` key was pressed, break from the loop
         elif key == ord("q"):
