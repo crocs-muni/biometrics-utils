@@ -4,7 +4,7 @@ lint:
 	flake8 --ignore E501
 
 install:
-	pip install --user -r requirements.txt
+	pip3 install --user -r requirements.txt
 	
 demo:
 	python3 detect_faces.py --verbose --image images/example.jpg

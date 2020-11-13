@@ -4,27 +4,31 @@ A set of utilities for biometrics classes at the [Faculty of Informatics](https:
 
 ## Usage
 
-```
-usage: detect_faces.py [-h] (-i IMAGE | -w WEBCAM) [-o OUTPUT] [-v] [-c CONFIDENCE] [-p PROTOTXT] [-m MODEL]
+Use the python script `detect_faces.py` to detect faces using deep learning in OpenCV.
 
-Detect faces using deep learning in OpenCV.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -i IMAGE, --image IMAGE
-                        path to input image
-  -w WEBCAM, --webcam WEBCAM
-                        webcam stream number (try 0, 1, 2, ...)
-  -o OUTPUT, --output OUTPUT
-                        image output directory
-  -v, --verbose         display debugging output
-  -c CONFIDENCE, --confidence CONFIDENCE
-                        threshold to display face detections
-  -p PROTOTXT, --prototxt PROTOTXT
-                        path to Caffe 'deploy' prototxt file
-  -m MODEL, --model MODEL
-                        path to Caffe pre-trained model
 ```
+python3 detect_faces.py [-h] (-i IMAGE | -w WEBCAM)
+                        [-o OUTPUT] [-v] [-c CONFIDENCE]
+                        [-p PROTOTXT] [-m MODEL]
+```
+
+Optional arguments:
+* `-h` / `--help`  
+  show this help message and exit
+* `-i IMAGE` / `--image IMAGE`  
+  path to input image
+* `-w WEBCAM` / `--webcam WEBCAM`  
+  webcam stream number (try 0, 1, 2, ...)
+* `-o OUTPUT` / `--output OUTPUT`  
+  image output directory
+* `-v` / `--verbose`  
+  display debugging output
+* `-c CONFIDENCE` / `--confidence CONFIDENCE`  
+  threshold to display face detections
+* `-p PROTOTXT` / `--prototxt PROTOTXT`  
+  path to Caffe 'deploy' prototxt file
+* `-m MODEL` / `--model MODEL`  
+  path to Caffe pre-trained model
 
 ## Installation
 
@@ -40,8 +44,8 @@ _Note: Installig OpenCV separately is not necessary as opencv-python should ship
 **Setup**
 
 - Install [Python](https://www.python.org/) (version 3) if you don't have it. Don't forget to install `pip`.
-- Install python dependencies with `pip install --user -r requirements.txt` or use `make install` for convenience.
-- You can test the installation with `python detect_faces.py --image images/example.jpg` or use `make demo` for convenience.
+- Install python dependencies with `pip3 install --user -r requirements.txt` or use `make install` for convenience.
+- You can test the installation with `python3 detect_faces.py --image images/example.jpg` or use `make demo` for convenience.
 
 **Compatibility**
 
