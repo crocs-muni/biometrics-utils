@@ -1,6 +1,6 @@
-# Utilities for biometrics classes
+# Face detection utility
 
-A set of utilities for biometrics classes at the [Faculty of Informatics](https://www.fi.muni.cz/), [Masaryk University](https://muni.cz) based on deep learning and OpenCV.
+A set of utilities for face detection for the biometrics classes at the [Faculty of Informatics](https://www.fi.muni.cz/), [Masaryk University](https://muni.cz) based on deep learning and OpenCV.
 
 ## Usage
 
