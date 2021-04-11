@@ -1,2 +1,6 @@
 # Ignore the image folder
 images
+
+# Compiled virtual machine files
+.vagrant/
+.ova

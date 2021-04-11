@@ -1,0 +1,19 @@
+# Ensure VirtualBox is used as default provider
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "peru/ubuntu-20.04-desktop-amd64"
+  config.vm.hostname = "pv080-hw04"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "pv080-hw04"
+    vb.gui = true
+    vb.memory = "8192"
+    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--vram", "96"]
+  end
+
+  # Provision (update, install, configure)
+  config.vm.provision :shell, privileged: "false", path: "bootstrap.sh"
+
+end
