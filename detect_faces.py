@@ -22,6 +22,7 @@ def detectFaces(imageData):
     # pass the blob through the network and obtain the detections and predictions
     net.setInput(blob)
     detections = net.forward()
+    finalDetections = []
 
     # loop over the detections
     for i in range(0, detections.shape[2]):
@@ -31,6 +32,7 @@ def detectFaces(imageData):
         # filter out weak detections by ensuring the `confidence` is greater than the minimum confidence
         if confidence < args["confidence"]:
             continue
+        finalDetections.append(str(confidence))
 
         # compute the (x, y)-coordinates of the bounding box for the object
         box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
@@ -41,6 +43,9 @@ def detectFaces(imageData):
         y = startY - 10 if startY - 10 > 10 else startY + 10
         cv2.rectangle(imageData, (startX, startY), (endX, endY), (0, 0, 255), 2)
         cv2.putText(imageData, text, (startX, y), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 255), 2)
+    
+    # return filtered detections
+    return finalDetections
 
 
 # construct the argument parse and parse the arguments
@@ -64,14 +69,15 @@ if args["image"] is not None:
     log("Loading input image ...")
     image = cv2.imread(args["image"])
 
-    # detect faces, draw rectangles
-    detectFaces(image)
+    # detect faces, draw rectangles, return filtered confidence numbers
+    detections = detectFaces(image)
 
     # draw instructiuons
     cv2.putText(image, "[any key] close preview", (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
 
-    # show the output image
+    # show the output image, put confidence in CLI
     cv2.imshow("Output", image)
+    print(args["image"] + "," + ','.join(detections))
     cv2.waitKey(0)
 
     # save image with detections
@@ -93,8 +99,8 @@ elif args["webcam"] is not None:
         frame = vs.read()
         orig = frame.copy()
 
-        # detect faces, draw rectangles
-        detectFaces(frame)
+        # detect faces, draw rectangles, return filtered confidence numbers
+        detections = detectFaces(frame)
 
         # draw instructiuons
         cv2.putText(frame, "[w] write frame to disk", (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.3, (0, 0, 255), 2)
@@ -104,11 +110,13 @@ elif args["webcam"] is not None:
         cv2.imshow("Webcam " + str(args["webcam"]) + " stream", frame)
         key = cv2.waitKey(1) & 0xFF
 
-        # if the `w` key was pressed, write the original and adjusted frame to disk
+        # if the `w` key was pressed, write the original and adjusted frame to disk, put confidence in CLI
         if key == ord("w"):
             total += 1
-            pathOriginal = os.path.sep.join([args["output"], "{}.jpg".format(str(total).zfill(3))])
-            pathDetected = os.path.sep.join([args["output"], "{}-faces.jpg".format(str(total).zfill(3))])
+            totalString = "{}".format(str(total).zfill(3))
+            print(totalString + ".jpg," + ','.join(detections))
+            pathOriginal = os.path.sep.join([args["output"], totalString + ".jpg"])
+            pathDetected = os.path.sep.join([args["output"], totalString + "-faces.jpg"])
             log("Saving images " + pathOriginal + ", " + pathDetected + " ...")
             cv2.imwrite(pathOriginal, orig)
             cv2.imwrite(pathDetected, frame)
