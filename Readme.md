@@ -53,7 +53,7 @@ The setup was tested on Linux (Fedora 32) and Windows with local Python installa
 
 ## Sources
 
-The unitities are based on the excellent tutorials at [pyImageSearch](https://www.pyimagesearch.com/) by Adrian Rosebrock.
+The utilities are based on the excellent tutorials at [pyImageSearch](https://www.pyimagesearch.com/) by Adrian Rosebrock.
 
 * [Face detection with OpenCV and deep learning](https://www.pyimagesearch.com/2018/02/26/face-detection-with-opencv-and-deep-learning/)
 * [How to build a custom face recognition dataset](https://www.pyimagesearch.com/2018/06/11/how-to-build-a-custom-face-recognition-dataset/)
