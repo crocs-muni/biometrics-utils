@@ -50,7 +50,7 @@ _Note: Installing OpenCV separately is not necessary as opencv-python should shi
 
 ### Compatibility
 
-The setup was tested on Linux (Fedora 32) and Windows with local Python installation (running via PowerShell). Note that Windows WSL is not supported as `detect_faces.py` is a graphical application. MacOS was not tested.
+The setup was tested on Linux (Fedora 33, Ubuntu 20.04), MacOS and Windows with local Python installation (running via PowerShell). Note that Windows WSL is not recommended as `detect_faces.py` is a graphical application. Use within a virtual machine is possible, though extra configuration may be necessary to get webcams working.
 
 ## Working principles
 
