@@ -4,3 +4,6 @@ images
 # Compiled virtual machine files
 .vagrant/
 .ova
+
+# IDE files
+.vscode/

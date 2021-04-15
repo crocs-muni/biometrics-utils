@@ -6,13 +6,14 @@ A set of utilities for face detection for the biometrics classes at the [Faculty
 
 Use the python script `detect_faces.py` to detect faces using deep learning in OpenCV.
 
-```
+```bash
 python3 detect_faces.py [-h] (-i IMAGE | -w WEBCAM)
                         [-o OUTPUT] [-v] [-c CONFIDENCE]
                         [-p PROTOTXT] [-m MODEL]
 ```
 
 Optional arguments:
+
 * `-h` / `--help`  
   show this help message and exit
 * `-i IMAGE` / `--image IMAGE`  
@@ -24,32 +25,42 @@ Optional arguments:
 * `-v` / `--verbose`  
   display debugging output
 * `-c CONFIDENCE` / `--confidence CONFIDENCE`  
-  threshold to display face detections
+  threshold to display face detections (default: 0.2)
 * `-p PROTOTXT` / `--prototxt PROTOTXT`  
-  path to Caffe 'deploy' prototxt file
+  path to a different Caffe 'deploy' prototxt file
 * `-m MODEL` / `--model MODEL`  
-  path to Caffe pre-trained model
+  path to a different Caffe pre-trained model
 
 ## Installation
 
-**Requirements**
+### Requirements
 
 * [Python](https://www.python.org/) (preferably version 3)
 * python package [numpy](https://numpy.org/) (optimized library for mathematical operations)
 * [opencv-python](https://pypi.org/project/opencv-python/) (unofficial pre-built CPU-only OpenCV packages for Python)
 * [imutils](https://pypi.org/project/imutils/) (set of utility functions for OpenCV by Adrian Rosebrock)
 
-_Note: Installig OpenCV separately is not necessary as opencv-python should ship with pre-build OpenCV._
+_Note: Installing OpenCV separately is not necessary as opencv-python should ship with pre-build OpenCV._
 
-**Setup**
+### Setup
 
-- Install [Python](https://www.python.org/) (version 3) if you don't have it. Don't forget to install `pip`.
-- Install python dependencies with `pip3 install --user -r requirements.txt` or use `make install` for convenience.
-- You can test the installation with `python3 detect_faces.py --image images/example.jpg` or use `make demo` for convenience.
+1. Install [Python](https://www.python.org/) (version 3) if you don't have it. Don't forget to install `pip`.
+2. Install python dependencies with `pip3 install --user -r requirements.txt` or use `make install` for convenience.
+3. You can test the installation with `python3 detect_faces.py --image images/example.jpg` or use `make demo` for convenience.
 
-**Compatibility**
+### Compatibility
 
 The setup was tested on Linux (Fedora 32) and Windows with local Python installation (running via PowerShell). Note that Windows WSL is not supported as `detect_faces.py` is a graphical application. MacOS was not tested.
+
+## Working principles
+
+The face detector used by the utility uses the technique of Haar Cascades. A nice brief explanation can be found directly in the [OpenCV-Python Tutorials](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html). Haar Cascades are a machine learning approach based on comparing pixel intensities in adjacent regions. For example, consider the image below. Top row shows two good features. The first feature focuses on the region of the eyes being often darker than the region of the nose and cheeks. The second feature relies on the eyes being darker than the bridge of the nose.
+
+![Exemplary Haar Cascades features](https://opencv-python-tutroals.readthedocs.io/en/latest/_images/haar.png)
+
+To find out which features work well, we use machine learning: we induce (train) good features from a lot of images classified manually. After having trained the set of features, face detection works by "brute-forcing" the regions on all possible location of the image (a very nice slowed illustration of the process can be seen [in this video](https://vimeo.com/12774628)). There are some more tricks to make this more efficient but those are not that important here.
+
+The trained detector is pretty versatile – and therefore comes bundled with OpenCV. That means you don't need to do any training/machine learning yourself, just use the model available in OpenCV.
 
 ## Sources
 
