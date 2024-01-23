@@ -45,8 +45,9 @@ _Note: Installing OpenCV separately is not necessary as opencv-python should shi
 ### Setup
 
 1. Install [Python](https://www.python.org/) (version 3) if you don't have it. Don't forget to install `pip`.
-2. Install python dependencies with `pip3 install --user -r requirements.txt` or use `make install` for convenience.
-3. You can test the installation with `python3 detect_faces.py --image images/example.jpg` or use `make demo` for convenience.
+2. Create a virtual environment `virt` with `python3 -m venv virt`. Activate it `. virt/bin/activate` (assuming Bash).
+3. Install Python dependencies with `pip3 install -r requirements.txt` or use `make install` for convenience.
+4. You can test the installation with `python3 detect_faces.py --image images/example.jpg` or use `make demo` for convenience.
 
 ### Compatibility
 
@@ -54,9 +55,9 @@ The setup was tested on Linux (Fedora 33, Ubuntu 20.04), MacOS and Windows with 
 
 ## Working principles
 
-The face detector used by the utility uses the technique of Haar Cascades. A nice brief explanation can be found directly in the [OpenCV-Python Tutorials](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_objdetect/py_face_detection/py_face_detection.html). Haar Cascades are a machine learning approach based on comparing pixel intensities in adjacent regions. For example, consider the image below. Top row shows two good features. The first feature focuses on the region of the eyes being often darker than the region of the nose and cheeks. The second feature relies on the eyes being darker than the bridge of the nose.
+The face detector used by the utility uses the technique of Haar Cascades. A nice brief explanation can be found directly in the [OpenCV-Python Tutorials](https://docs.opencv.org/4.x/db/d28/tutorial_cascade_classifier.html). Haar Cascades are a machine learning approach based on comparing pixel intensities in adjacent regions. For example, consider the image below. Top row shows two good features. The first feature focuses on the region of the eyes being often darker than the region of the nose and cheeks. The second feature relies on the eyes being darker than the bridge of the nose.
 
-![Exemplary Haar Cascades features](https://opencv-python-tutroals.readthedocs.io/en/latest/_images/haar.png)
+![Exemplary Haar Cascades features](https://docs.opencv.org/4.x/haar.png)
 
 To find out which features work well, we use machine learning: we induce (train) good features from a lot of images classified manually. After having trained the set of features, face detection works by "brute-forcing" the regions on all possible location of the image (a very nice slowed illustration of the process can be seen [in this video](https://vimeo.com/12774628)). There are some more tricks to make this more efficient but those are not that important here.
 
